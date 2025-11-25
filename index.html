@@ -23,28 +23,24 @@
     .container {
       width: 100%;
       max-width: 520px;
-      margin: 40px;
       background: rgba(255, 255, 255, 0.12);
-      padding: 22px;
+      padding: 25px;
       border-radius: 22px;
-      backdrop-filter: blur(8px) saturate(120%);
-      box-shadow: 0 10px 30px rgba(31, 41, 55, 0.3);
-      border: 1px solid rgba(255,255,255,0.06);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
 
     h2 {
       text-align: center;
-      margin-bottom: 14px;
+      margin-bottom: 20px;
       font-size: 26px;
-      letter-spacing: 1px;
     }
 
     label {
       font-size: 14px;
       font-weight: 600;
       display: block;
-      margin-bottom: 6px;
-      color: #eaf2ff;
+      margin-bottom: 8px;
     }
 
     input, textarea {
@@ -52,47 +48,49 @@
       padding: 12px;
       border-radius: 12px;
       border: none;
-      outline: none;
-      font-size: 14px;
-      margin-bottom: 12px;
       background: rgba(255, 255, 255, 0.95);
-      color: #0b1220;
+      margin-bottom: 18px;
+      font-size: 14px;
+      color: #111;
     }
 
     .row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 15px;   /* FIXED SPACING */
+      margin-bottom: 15px;
     }
 
     button {
       width: 100%;
-      padding: 14px;
-      font-size: 16px;
+      padding: 15px;
+      background: #fff;
+      color: #3f2b96;
       border: none;
       border-radius: 14px;
-      background: #ffffff;
-      color: #3f2b96;
+      font-size: 16px;
       font-weight: 700;
       cursor: pointer;
+      margin-top: 10px;
     }
 
     .success-msg {
       text-align: center;
       margin-top: 14px;
-      font-size: 16px;
       display: none;
       color: #dff7e1;
+      font-size: 16px;
     }
   </style>
 
 </head>
 <body>
+
   <div class="container">
     <h2>Customer Details</h2>
 
     <form id="detailsForm">
-      
+
       <label>Your Full Name:</label>
       <input type="text" name="fullName" required />
 
@@ -157,7 +155,6 @@
   </div>
 
   <script>
-    // Auto Age
     function calcAge(dob) {
       if (!dob) return '';
       const b = new Date(dob);
@@ -176,7 +173,6 @@
       document.getElementById('wifeAge').value = calcAge(e.target.value);
     });
 
-    // FORM SUBMIT
     document.getElementById("detailsForm").addEventListener("submit", function(event) {
       event.preventDefault();
 
@@ -200,15 +196,13 @@
         submittedAt: new Date().toISOString()
       };
 
-      // SEND TO GOOGLE SHEETS
-      fetch("https://script.google.com/a/macros/karmaexperience.com/s/AKfycbyE0bqfjE7EkvAuL31GNtthE0GM2UpxWZ_x3NnOWpqo3XdHGCyw_kAj2WcxhNvOYFqh/exec", {
+      fetch("https://script.google.com/a/macros/karmaexperience.com/s/AKfycbz6hCI9T3mBVvZo5-ab_YACcTNJRK332J3h4MwEKeDOA2kbJX0gCrbFOaR7krnWjGZG/exec", {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
       });
 
-      // SHOW SUCCESS
       document.getElementById("successMsg").style.display = "block";
       form.reset();
       document.getElementById('age').value = '';
