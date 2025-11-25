@@ -86,7 +86,7 @@
       display: none;
       color: #dff7e1;
     }
-  </style>
+  </style>https://script.google.com/a/macros/karmaexperience.com/s/AKfycbz6hCI9T3mBVvZo5-ab_YACcTNJRK332J3h4MwEKeDOA2kbJX0gCrbFOaR7krnWjGZG/exec
 </head>
 <body>
   <div class="container">
@@ -175,30 +175,29 @@
       document.getElementById('wifeAge').value = calcAge(e.target.value);
     });
 
-    document.getElementById("detailsForm").addEventListener("submit", function (event) {
-      event.preventDefault();
+      // Send data to Google Apps Script
+  fetch("https://script.google.com/a/macros/karmaexperience.com/s/AKfycbz6hCI9T3mBVvZo5-ab_YACcTNJRK332J3h4MwEKeDOA2kbJX0gCrbFOaR7krnWjGZG/exec", {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+  .then(() => {
+    document.getElementById("successMsg").style.display = "block";
+    form.reset();
+    document.getElementById('age').value = '';
+    document.getElementById('wifeAge').value = '';
+    setTimeout(()=> document.getElementById("successMsg").style.display = "none", 4000);
+  })
+  .catch(err => alert("Error sending data: " + err));
+});
 
-      const form = event.target;
-      const data = {
-        fullName: form.fullName.value,
-        dob: form.dob.value,
-        age: document.getElementById('age').value,
-        wifeName: form.wifeName.value,
-        wifeDob: form.wifeDob.value,
-        wifeAge: document.getElementById('wifeAge').value,
-        childrenNames: form.childrenNames.value,
-        childrenAge: form.childrenAge.value,
-        address: form.address.value,
-        contact1: form.contact1.value,
-        contact2: form.contact2.value,
-        occupation: form.occupation.value,
-        email: form.email.value,
-        travelDates: form.travelDates.value,
-        submittedAt: new Date().toISOString()
-      };
 
       // SEND TO GOOGLE SHEETS
-      fetch("https://script.google.com/a/macros/karmaexperience.com/s/AKfycbz6hCI9T3mBVvZo5-ab_YACcTNJRK332J3h4MwEKeDOA2kbJX0gCrbFOaR7krnWjGZG/exec", {
+      fetch("https://script.google.com/a/macros/karmaexperience.com/s/AKfycbz6hCI9T3mBVvZo5-ab_YACcTNJRK332J3h4MwEKeDOA2kbJX0gCrbFOaR7krnWjGZG/exec
+", {
         method: "POST",
         mode: "no-cors",
         body: JSON.stringify(data)
