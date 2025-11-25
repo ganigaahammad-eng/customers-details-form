@@ -56,7 +56,6 @@
       margin-bottom: 12px;
       background: rgba(255, 255, 255, 0.95);
       color: #0b1220;
-      box-sizing: border-box;
     }
 
     .row {
@@ -64,8 +63,6 @@
       grid-template-columns: 1fr 1fr;
       gap: 12px;
     }
-
-    .full { grid-column: 1 / -1; }
 
     button {
       width: 100%;
@@ -89,14 +86,13 @@
       display: none;
       color: #dff7e1;
     }
-
-    .small { font-size: 12px; color: #dceaff; margin-top: -8px; margin-bottom: 10px; }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>Customer Details</h2>
     <form id="detailsForm">
+      
       <label>Your Full Name:</label>
       <input type="text" name="fullName" required />
 
@@ -126,10 +122,10 @@
       </div>
 
       <label>Your Children's Names (comma separated):</label>
-      <input type="text" name="childrenNames" placeholder="e.g. Rahul, Priya" />
+      <input type="text" name="childrenNames" />
 
-      <label>Children Ages (comma separated, match order):</label>
-      <input type="text" name="childrenAge" placeholder="e.g. 5, 3" />
+      <label>Children Ages (comma separated):</label>
+      <input type="text" name="childrenAge" />
 
       <label>Address with Pin Code:</label>
       <textarea name="address" rows="2" required></textarea>
@@ -152,7 +148,7 @@
       <input type="email" name="email" required />
 
       <label>Travel Dates:</label>
-      <input type="text" name="travelDates" placeholder="e.g. 2025-12-03 to 2025-12-07" required />
+      <input type="text" name="travelDates" placeholder="2025-12-03 to 2025-12-07" required />
 
       <button type="submit">Submit</button>
     </form>
@@ -161,7 +157,6 @@
   </div>
 
   <script>
-    // Helper: calculate age from date string (YYYY-MM-DD)
     function calcAge(dob) {
       if (!dob) return '';
       const b = new Date(dob);
@@ -175,6 +170,7 @@
     document.querySelector('input[name="dob"]').addEventListener('change', function(e){
       document.getElementById('age').value = calcAge(e.target.value);
     });
+
     document.querySelector('input[name="wifeDob"]').addEventListener('change', function(e){
       document.getElementById('wifeAge').value = calcAge(e.target.value);
     });
@@ -201,26 +197,13 @@
         submittedAt: new Date().toISOString()
       };
 
-      // Save to localStorage as table array
-      // SEND DATA TO GOOGLE SHEETS
-fetch("YOUR_GOOGLE_WEB_APP_URL", {
-  method: "POST",
-  mode: "no-cors",
-  body: JSON.stringify(data),
-})
-.then(() => {
-  document.getElementById("successMsg").style.display = "block";
-  form.reset();
-  document.getElementById('age').value = '';
-  document.getElementById('wifeAge').value = '';
-  setTimeout(() => {
-    document.getElementById("successMsg").style.display = "none";
-  }, 4000);
-})
-.catch(err => console.log("Error:", err));
+      // SEND TO GOOGLE SHEETS
+      fetch("https://script.google.com/a/macros/karmaexperience.com/s/AKfycbz6hCI9T3mBVvZo5-ab_YACcTNJRK332J3h4MwEKeDOA2kbJX0gCrbFOaR7krnWjGZG/exec", {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify(data)
+      });
 
-
-      // Show success and reset (keep small data if needed)
       document.getElementById("successMsg").style.display = "block";
       form.reset();
       document.getElementById('age').value = '';
