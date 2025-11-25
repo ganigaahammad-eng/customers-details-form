@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Customer Details Form</title>
+
   <style>
     body {
       margin: 0;
@@ -46,7 +47,7 @@
       color: #eaf2ff;
     }
 
-    input, textarea, select {
+    input, textarea {
       width: 100%;
       padding: 12px;
       border-radius: 12px;
@@ -74,10 +75,7 @@
       color: #3f2b96;
       font-weight: 700;
       cursor: pointer;
-      transition: transform .15s ease;
     }
-
-    button:active { transform: translateY(1px); }
 
     .success-msg {
       text-align: center;
@@ -86,11 +84,13 @@
       display: none;
       color: #dff7e1;
     }
-  </style>https://script.google.com/a/macros/karmaexperience.com/s/AKfycbz6hCI9T3mBVvZo5-ab_YACcTNJRK332J3h4MwEKeDOA2kbJX0gCrbFOaR7krnWjGZG/exec
+  </style>
+
 </head>
 <body>
   <div class="container">
     <h2>Customer Details</h2>
+
     <form id="detailsForm">
       
       <label>Your Full Name:</label>
@@ -121,11 +121,11 @@
         </div>
       </div>
 
-      <label>Your Children's Names (comma separated):</label>
-      <input type="text" name="childrenNames" />
+      <label>Your Children's Names:</label>
+      <input type="text" name="childrenNames" placeholder="Rahul, Priya" />
 
-      <label>Children Ages (comma separated):</label>
-      <input type="text" name="childrenAge" />
+      <label>Children Ages:</label>
+      <input type="text" name="childrenAge" placeholder="5, 3" />
 
       <label>Address with Pin Code:</label>
       <textarea name="address" rows="2" required></textarea>
@@ -141,7 +141,7 @@
         </div>
       </div>
 
-      <label>Occupation With Designation :</label>
+      <label>Occupation:</label>
       <input type="text" name="occupation" />
 
       <label>Email ID:</label>
@@ -157,58 +157,65 @@
   </div>
 
   <script>
+    // Auto Age
     function calcAge(dob) {
       if (!dob) return '';
       const b = new Date(dob);
-      const today = new Date();
-      let age = today.getFullYear() - b.getFullYear();
-      const m = today.getMonth() - b.getMonth();
-      if (m < 0 || (m === 0 && today.getDate() < b.getDate())) age--;
+      const t = new Date();
+      let age = t.getFullYear() - b.getFullYear();
+      const m = t.getMonth() - b.getMonth();
+      if (m < 0 || (m === 0 && t.getDate() < b.getDate())) age--;
       return age;
     }
 
-    document.querySelector('input[name="dob"]').addEventListener('change', function(e){
+    document.querySelector('input[name="dob"]').addEventListener('change', e => {
       document.getElementById('age').value = calcAge(e.target.value);
     });
 
-    document.querySelector('input[name="wifeDob"]').addEventListener('change', function(e){
+    document.querySelector('input[name="wifeDob"]').addEventListener('change', e => {
       document.getElementById('wifeAge').value = calcAge(e.target.value);
     });
 
-      // Send data to Google Apps Script
-  fetch("https://script.google.com/a/macros/karmaexperience.com/s/AKfycbz6hCI9T3mBVvZo5-ab_YACcTNJRK332J3h4MwEKeDOA2kbJX0gCrbFOaR7krnWjGZG/exec", {
-    method: "POST",
-    mode: "no-cors",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  })
-  .then(() => {
-    document.getElementById("successMsg").style.display = "block";
-    form.reset();
-    document.getElementById('age').value = '';
-    document.getElementById('wifeAge').value = '';
-    setTimeout(()=> document.getElementById("successMsg").style.display = "none", 4000);
-  })
-  .catch(err => alert("Error sending data: " + err));
-});
+    // FORM SUBMIT
+    document.getElementById("detailsForm").addEventListener("submit", function(event) {
+      event.preventDefault();
 
+      const form = event.target;
+
+      const data = {
+        fullName: form.fullName.value,
+        dob: form.dob.value,
+        age: document.getElementById('age').value,
+        wifeName: form.wifeName.value,
+        wifeDob: form.wifeDob.value,
+        wifeAge: document.getElementById('wifeAge').value,
+        childrenNames: form.childrenNames.value,
+        childrenAge: form.childrenAge.value,
+        address: form.address.value,
+        contact1: form.contact1.value,
+        contact2: form.contact2.value,
+        occupation: form.occupation.value,
+        email: form.email.value,
+        travelDates: form.travelDates.value,
+        submittedAt: new Date().toISOString()
+      };
 
       // SEND TO GOOGLE SHEETS
-      fetch("https://script.google.com/a/macros/karmaexperience.com/s/AKfycbz6hCI9T3mBVvZo5-ab_YACcTNJRK332J3h4MwEKeDOA2kbJX0gCrbFOaR7krnWjGZG/exec
-", {
+      fetch("https://script.google.com/a/macros/karmaexperience.com/s/AKfycbz6hCI9T3mBVvZo5-ab_YACcTNJRK332J3h4MwEKeDOA2kbJX0gCrbFOaR7krnWjGZG/exec", {
         method: "POST",
         mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
       });
 
+      // SHOW SUCCESS
       document.getElementById("successMsg").style.display = "block";
       form.reset();
       document.getElementById('age').value = '';
       document.getElementById('wifeAge').value = '';
-      setTimeout(()=> document.getElementById("successMsg").style.display = "none", 4000);
+      setTimeout(() => document.getElementById("successMsg").style.display = "none", 4000);
     });
   </script>
+
 </body>
 </html>
